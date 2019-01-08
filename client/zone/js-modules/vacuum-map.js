@@ -2,7 +2,7 @@ import { MapDrawer } from "./map-drawer.js";
 import { PathDrawer } from "./path-drawer.js";
 import { trackTransforms } from "./tracked-canvas.js";
 import { transformFromMeter, flipX, noTransform } from "./coordinate-transforms.js";
-import { GotoPoint, Zone, VirtualWall } from "./locations.js";
+import { GotoPoint, Zone, VirtualWall, NoGoZone } from "./locations.js";
 
 /**
  * Represents the map and handles all the userinteractions
@@ -56,7 +56,12 @@ export function VacuumMap(canvasElement) {
             const p2 = new DOMPoint(x2, y2);
 
             return new VirtualWall(convertToMapCoords(p1), convertToMapCoords(p2));
-        });
+        }).concat(noGoZoneData.map(([x1, y1, x2, y2, x3, y3, x4, y4]) => {
+            const p1 = new DOMPoint(x1, y1);
+            const p2 = new DOMPoint(x3, y3);
+
+            return new NoGoZone(convertToMapCoords(p1), convertToMapCoords(p2));
+        }));
     }
 
     /**
