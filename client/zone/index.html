@@ -7,6 +7,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Canvas Experiments</title>
     <style>
+        :root {
+            --map-background-1: #efeff4;
+            --map-background-2: #afafaf;
+
+            --map-free: #0076ff;
+            --map-occupied: #6699ff;
+            --path: #ffffff;
+        }
+
         html,
         body {
             border: none;
@@ -30,6 +39,7 @@
         canvas#experiments {
             grid-area: map;
             touch-action: none;
+            background-image: linear-gradient(var(--map-background-1), var(--map-background-2));
         }
         #console {
 	    display: block;
@@ -73,26 +83,11 @@
             <label for="x2">X2: </label><input type="text" name="x2" id="x2" readonly /><label for="y2">Y2: </label><input type="text" name="y2" id="y2" readonly />
         </div>
     </div>
-    <button onclick="map.goto_point()">Goto</button>
-    <button onclick="map.zoned_cleanup()">Zone</button>
+    <button id="goto">Goto</button>
+    <button id="zone">Zone</button>
     <script src="geometry-polyfill.js"></script>
     <script src="hammer.min.js"></script>
-    <script src="vacuum-map.js"></script>
-    <script>
-        var map = new VacuumMap(document.getElementById('experiments'));
-
-        function fetchmap() {
-            fetch("/api/map/latest?doNotTransformPath")
-                .then(res => res.json())
-                .then(map.updateMap)
-                .then(_ => setTimeout(fetchmap, 3000));
-        }
-
-        fetch("/api/map/latest?doNotTransformPath")
-            .then(res => res.json())
-            .then(map.initCanvas)
-            .then(_ => setTimeout(fetchmap, 3000));
-    </script>
+    <script src="main.js" type="module"></script>
 </body>
 
 </html>
